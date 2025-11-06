@@ -1,10 +1,7 @@
 <?php
 
-use App\Models\User;
-use Illuminate\Http\Request;
+use App\Http\Controllers\API\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return User::all()->toResourceCollection();
-});
+Route::resource('/users', UserController::class);
 // ->middleware('auth:sanctum');
