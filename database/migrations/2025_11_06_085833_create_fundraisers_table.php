@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('fundraisers', function (Blueprint $table) {
             $table->id();
-            $table->string('dob');
-            $table->foreignId('user_id');
+            $table->date('dob');
+            $table->foreignId('user_id')->constrained();
             $table->string('profile_picture');
             $table->string('id_number')->unique();
             $table->softDeletes('deleted_at', precision: 0);
