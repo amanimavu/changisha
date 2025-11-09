@@ -16,20 +16,22 @@ class UserController extends Controller
         return User::all()->toResourceCollection();
     }
 
+    public static $rules = [
+        'name' => ['required'],
+        'address' => ['nullable', 'max:255'],
+        'email' => ['bail', 'required', "unique:users,email", 'max:255'],
+        'phone' => ['bail', 'required', 'unique:users,phone', 'max:255'],
+        'username' => ['bail', 'required', 'unique:users,username', 'max:255'],
+        'password' => ['bail', 'required', 'unique:users',]
+    ];
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
         // validate request
-        $validated = $request->validate([
-            'name' => ['required'],
-            'address' => ['nullable', 'max:255'],
-            'email' => ['bail', 'required', "unique:users,email", 'max:255'],
-            'phone' => ['bail', 'required', 'unique:users,phone', 'max:255'],
-            'username' => ['bail', 'required', 'unique:users,username', 'max:255'],
-            'password' => ['bail', 'required', 'unique:users',]
-        ]);
+        $validated = $request->validate(self::$rules);
         return User::create($validated);
     }
 
@@ -46,7 +48,18 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $user = User::find($id);
+        $rules = self::$rules;
+        array_pop($rules);
+        if ($request->isMethod("patch")) {
+            $rules = array_map(fn($value) => ['sometimes', ...$value], $rules);
+        }
+        $validated = $request->validate($rules);
+        foreach ($validated as $key => $value) {
+            $user[$key] = $value;
+        }
+        $user->save();
+        return User::find($id)->toResource()->additional(["message" => "user has been successfully updated"]);
     }
 
     /**
@@ -54,6 +67,7 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        return User::destroy($id);
+        User::destroy($id);
+        return User::withTrashed()->find($id)->toResource()->additional(["message" => "user has been successfully deleted"]);
     }
 }
