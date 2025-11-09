@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\API\UserController;
+use App\Http\Middleware\ForceJsonResponse;
 use Illuminate\Support\Facades\Route;
 
-Route::resource('/users', UserController::class);
 // ->middleware('auth:sanctum');
+Route::middleware([ForceJsonResponse::class])->group(function () {
+    Route::resource('/users', UserController::class);
+});
