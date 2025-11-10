@@ -19,7 +19,7 @@ class FundraiserFactory extends Factory
     {
         return [
             "user_id" => User::factory(),
-            "profile_picture" => fake()->image(),
+            "profile_picture" => fake()->image($dir = "/images"),
             "dob" => fake()->date(),
             "id_number" => fake()->unique()->randomNumber(6, true)
         ];

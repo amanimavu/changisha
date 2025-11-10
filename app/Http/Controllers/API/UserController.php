@@ -8,14 +8,6 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        return User::all()->toResourceCollection();
-    }
-
     public static $rules = [
         'name' => ['required'],
         'address' => ['nullable', 'max:255'],
@@ -24,6 +16,14 @@ class UserController extends Controller
         'username' => ['bail', 'required', 'unique:users,username', 'max:255'],
         'password' => ['bail', 'required', 'unique:users',]
     ];
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        return User::all()->toResourceCollection();
+    }
 
     /**
      * Store a newly created resource in storage.
