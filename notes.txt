@@ -1,1 +1,5 @@
 clear log files: https://stackoverflow.com/questions/28127495/in-phps-laravel-how-do-i-clear-laravel-log
+
+To get access to newly created Models in tinker: composer dump-autoload
+
+debug using manual pail run: php artisan pail
