@@ -1,0 +1,1 @@
+clear log files: https://stackoverflow.com/questions/28127495/in-phps-laravel-how-do-i-clear-laravel-log
