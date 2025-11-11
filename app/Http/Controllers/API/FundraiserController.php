@@ -83,6 +83,6 @@ class FundraiserController extends Controller
     public function destroy(string $id)
     {
         Fundraiser::destroy($id);
-        return ["message" => "Fundraiser has been successfully deleted"];
+        return Fundraiser::withTrashed()->find($id)->toResource()->additional(["message" => "Fundraiser has been successfully deleted"]);
     }
 }
