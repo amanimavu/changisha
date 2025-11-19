@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('campaigns', function (Blueprint $table) {
-            $table->boolean("verified")->default(0);
+            $table->boolean("verified")->default(0)->change();
         });
     }
 
