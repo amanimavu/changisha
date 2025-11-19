@@ -1,5 +1,6 @@
 <?php
 
+use App\Enum\Privacy;
 use App\Enum\Status;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -19,12 +20,12 @@ return new class extends Migration
             $table->date("start_date");
             $table->date("end_date");
             $table->decimal('goal', total: 8, places: 2);
-            $table->decimal('funds_raised', total: 8, places: 2);
-            $table->enum("status", Status::cases());
+            $table->decimal('funds_raised', total: 8, places: 2)->default(0.00);
+            $table->enum("status", Status::cases())->default(Status::pending);
             $table->string("campaign_image", 150); //we are using url of uploaded images
-            $table->string("paybill_number", 10);
-            $table->enum("privacy", ["public", "private"]);
-            $table->boolean("verified");
+            $table->integer("paybill_number");
+            $table->enum("privacy", Privacy::cases())->default(Privacy::public);
+            $table->boolean("verified")->default(0);
 
             $table->foreignId("category_id")->constrained();
             $table->foreignId("fundraiser_id")->constrained();
