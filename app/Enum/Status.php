@@ -2,10 +2,11 @@
 
 namespace App\Enum;
 
-enum Status
+enum Status: string
 {
-    case active;
-    case expired;
-    case completed;
-    case cancelled;
+    case active = "active";
+    case pending = "pending";
+    case expired = "expired";
+    case completed = "completed";
+    case cancelled = "cancelled";
 }
