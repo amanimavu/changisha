@@ -67,7 +67,6 @@ class FundraiserController extends Controller
         if ($request->isMethod("patch")) {
             $rules = array_map(fn($value) => ['sometimes', ...$value], $rules);
         }
-        Log::debug("validation rules: {rules}", ['rules' => $rules]);
         $validator = Validator::make($request->all(), $rules, self::makeMessages());
         $validated = $validator->validated();
         foreach ($validated as $key => $value) {
