@@ -17,18 +17,18 @@ class Campaign extends Model
      * @var list<string>
      */
     protected $fillable = [
-        "title",
-        "description",
-        "fundraiser_id",
-        "start_date",
-        "end_date",
-        "goal",
-        "funds_raised",
-        "status",
-        "campaign_image",
-        "paybill_number",
-        "privacy",
-        "category_id"
+        'title',
+        'description',
+        'fundraiser_id',
+        'start_date',
+        'end_date',
+        'goal',
+        'funds_raised',
+        'status',
+        'campaign_image',
+        'paybill_number',
+        'privacy',
+        'category_id',
     ];
 
     public function fundraiser(): BelongsTo

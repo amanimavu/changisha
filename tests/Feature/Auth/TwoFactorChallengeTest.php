@@ -29,14 +29,14 @@ class TwoFactorChallengeTest extends TestCase
         }
 
         Features::twoFactorAuthentication([
-            'confirm' => true,
+            'confirm'         => true,
             'confirmPassword' => true,
         ]);
 
         $user = User::factory()->create();
 
         $this->post(route('login.store'), [
-            'email' => $user->email,
+            'email'    => $user->email,
             'password' => 'password',
         ])->assertRedirect(route('two-factor.login'));
     }

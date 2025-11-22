@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 class CategoryController extends Controller
 {
     public static $rules = [
-        "name" => ["required", "unique:categories"]
+        'name' => ['required', 'unique:categories'],
     ];
 
     /**
@@ -27,6 +27,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate(self::$rules);
+
         return Category::create($validated);
     }
 
@@ -49,7 +50,8 @@ class CategoryController extends Controller
             $category[$key] = $value;
         }
         $category->save();
-        return Category::find($id)->toResource()->additional(["message" => "category has been successfully updated"]);
+
+        return Category::find($id)->toResource()->additional(['message' => 'category has been successfully updated']);
     }
 
     /**
@@ -59,6 +61,7 @@ class CategoryController extends Controller
     {
         Log::debug('category id: {id}', ['id' => $id]);
         Category::destroy($id);
-        return Category::withTrashed()->find($id)->toResource()->additional(["message" => "Category has been successfully deleted"]);
+
+        return Category::withTrashed()->find($id)->toResource()->additional(['message' => 'Category has been successfully deleted']);
     }
 }

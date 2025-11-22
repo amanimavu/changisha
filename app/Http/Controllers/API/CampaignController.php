@@ -15,26 +15,26 @@ class CampaignController extends Controller
     public static function makeRules()
     {
         return [
-            "title" => ["required", "string"],
-            "description" => ["required", "string"],
-            "start_date" => ["required", Rule::date()->format('Y-m-d')],
-            "end_date" => ["required", Rule::date()->format('Y-m-d'), "after:start_date"],
-            "goal" => ["required", "decimal:0,2"],
-            "status" => [Rule::enum(Status::class)->only([Status::cancelled, Status::active])],
-            "campaign_image" => ["required", "string", "url:https"],
-            "paybill_number" => ["required", "integer"],
-            "privacy" => [Rule::enum(Privacy::class)],
-            "category_id" => ["required", "integer", "gt:0"],
-            "fundraiser_id" => ["required", "integer", "gt:0"],
+            'title'          => ['required', 'string'],
+            'description'    => ['required', 'string'],
+            'start_date'     => ['required', Rule::date()->format('Y-m-d')],
+            'end_date'       => ['required', Rule::date()->format('Y-m-d'), 'after:start_date'],
+            'goal'           => ['required', 'decimal:0,2'],
+            'status'         => [Rule::enum(Status::class)->only([Status::cancelled, Status::active])],
+            'campaign_image' => ['required', 'string', 'url:https'],
+            'paybill_number' => ['required', 'integer'],
+            'privacy'        => [Rule::enum(Privacy::class)],
+            'category_id'    => ['required', 'integer', 'gt:0'],
+            'fundraiser_id'  => ['required', 'integer', 'gt:0'],
         ];
     }
 
     public static function makeMessages()
     {
         return [
-            "start_date.date_format" => "The start_date field must match the format YYYY-MM-DD",
-            "end_date.date_format" => "The end_date field must match the format YYYY-MM-DD",
-            "status" => "You may only set the status to 'active' or 'cancelled'"
+            'start_date.date_format' => 'The start_date field must match the format YYYY-MM-DD',
+            'end_date.date_format'   => 'The end_date field must match the format YYYY-MM-DD',
+            'status'                 => "You may only set the status to 'active' or 'cancelled'",
         ];
     }
 
@@ -53,6 +53,7 @@ class CampaignController extends Controller
     {
         $validator = Validator::make($request->all(), self::makeRules(), self::makeMessages());
         $validated = $validator->validated();
+
         return Campaign::create($validated);
     }
 
@@ -71,8 +72,8 @@ class CampaignController extends Controller
     {
         $campaign = Campaign::find($id);
         $rules = self::makeRules();
-        if ($request->isMethod("patch")) {
-            $rules = array_map(fn($value) => ['sometimes', ...$value], $rules);
+        if ($request->isMethod('patch')) {
+            $rules = array_map(fn ($value) => ['sometimes', ...$value], $rules);
         }
         $validator = Validator::make($request->all(), $rules, self::makeMessages());
         $validated = $validator->validated();
@@ -80,7 +81,8 @@ class CampaignController extends Controller
             $campaign[$key] = $value;
         }
         $campaign->save();
-        return Campaign::find($id)->toResource()->additional(["message" => "campaign has been successfully updated"]);
+
+        return Campaign::find($id)->toResource()->additional(['message' => 'campaign has been successfully updated']);
     }
 
     /**
@@ -89,6 +91,7 @@ class CampaignController extends Controller
     public function destroy(string $id)
     {
         Campaign::destroy($id);
-        return Campaign::withTrashed()->find($id)->toResource()->additional(["message" => "Campaign has been successfully deleted"]);
+
+        return Campaign::withTrashed()->find($id)->toResource()->additional(['message' => 'Campaign has been successfully deleted']);
     }
 }

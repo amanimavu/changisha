@@ -24,7 +24,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //validate the request
+        // validate the request
     }
 
     /**

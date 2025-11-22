@@ -3,19 +3,18 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SaveUserRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Services\UserCreationService;
 
 class UserController extends Controller
 {
-    public static $rules = [
-        'name' => ['required'],
-        'address' => ['nullable', 'max:255'],
-        'email' => ['bail', 'required', "unique:users,email", 'max:255'],
-        'phone' => ['bail', 'required', 'unique:users,phone', 'max:255'],
-        'username' => ['bail', 'required', 'unique:users,username', 'max:255'],
-        'password' => ['bail', 'required', 'unique:users',]
-    ];
+    protected $userCreationService;
+
+    public function __construct(UserCreationService $userCreationService)
+    {
+        $this->userCreationService = $userCreationService;
+    }
 
     /**
      * Display a listing of the resource.
@@ -28,11 +27,9 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SaveUserRequest $request)
     {
-        // validate request
-        $validated = $request->validate(self::$rules);
-        return User::create($validated);
+        return $this->userCreationService->create($request);
     }
 
     /**
@@ -46,20 +43,16 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(SaveUserRequest $request, string $id)
     {
         $user = User::find($id);
-        $rules = self::$rules;
-        array_pop($rules);
-        if ($request->isMethod("patch")) {
-            $rules = array_map(fn($value) => ['sometimes', ...$value], $rules);
-        }
-        $validated = $request->validate($rules);
+        $validated = $request->validated();
         foreach ($validated as $key => $value) {
             $user[$key] = $value;
         }
         $user->save();
-        return User::find($id)->toResource()->additional(["message" => "user has been successfully updated"]);
+
+        return User::find($id)->toResource()->additional(['message' => 'user has been successfully updated']);
     }
 
     /**
@@ -68,6 +61,7 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         User::destroy($id);
-        return User::withTrashed()->find($id)->toResource()->additional(["message" => "user has been successfully deleted"]);
+
+        return User::withTrashed()->find($id)->toResource()->additional(['message' => 'user has been successfully deleted']);
     }
 }

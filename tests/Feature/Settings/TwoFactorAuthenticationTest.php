@@ -21,7 +21,7 @@ class TwoFactorAuthenticationTest extends TestCase
         }
 
         Features::twoFactorAuthentication([
-            'confirm' => true,
+            'confirm'         => true,
             'confirmPassword' => true,
         ]);
     }
@@ -66,9 +66,9 @@ class TwoFactorAuthenticationTest extends TestCase
         $user = User::factory()->create();
 
         $user->forceFill([
-            'two_factor_secret' => encrypt('test-secret'),
+            'two_factor_secret'         => encrypt('test-secret'),
             'two_factor_recovery_codes' => encrypt(json_encode(['code1', 'code2'])),
-            'two_factor_confirmed_at' => null,
+            'two_factor_confirmed_at'   => null,
         ])->save();
 
         $this->actingAs($user);
@@ -78,8 +78,8 @@ class TwoFactorAuthenticationTest extends TestCase
         $component->assertSet('twoFactorEnabled', false);
 
         $this->assertDatabaseHas('users', [
-            'id' => $user->id,
-            'two_factor_secret' => null,
+            'id'                        => $user->id,
+            'two_factor_secret'         => null,
             'two_factor_recovery_codes' => null,
         ]);
     }

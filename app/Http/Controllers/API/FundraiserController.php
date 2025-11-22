@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Fundraiser;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -14,19 +13,18 @@ class FundraiserController extends Controller
     public static function makeRules()
     {
         return [
-            "dob" => ["required", Rule::date()->format('Y-m-d')],
-            "user_id" => ["required", "unique:fundraisers"],
-            //validate image url once image has been uploaded
-            "profile_picture" => ["required"],
-            "id_number" => ["required"]
+            'dob'             => ['required', Rule::date()->format('Y-m-d')],
+            'user_id'         => ['required', 'unique:fundraisers'],
+            'profile_picture' => ['required'],
+            'id_number'       => ['required'],
         ];
     }
 
     public static function makeMessages()
     {
         return [
-            "dob.date_format" => "The dob field must match the format YYYY-MM-DD",
-            "user_id.unique" => "A fundraiser profile already exists for this user.",
+            'dob.date_format' => 'The dob field must match the format YYYY-MM-DD',
+            'user_id.unique'  => 'A fundraiser profile already exists for this user.',
         ];
     }
 
@@ -45,6 +43,7 @@ class FundraiserController extends Controller
     {
         $validator = Validator::make($request->all(), self::makeRules(), self::makeMessages());
         $validated = $validator->validated();
+
         return Fundraiser::create($validated);
     }
 
@@ -63,9 +62,9 @@ class FundraiserController extends Controller
     {
         $fundraiser = Fundraiser::find($id);
         $rules = self::makeRules();
-        array_pop($rules["user_id"]);
-        if ($request->isMethod("patch")) {
-            $rules = array_map(fn($value) => ['sometimes', ...$value], $rules);
+        array_pop($rules['user_id']);
+        if ($request->isMethod('patch')) {
+            $rules = array_map(fn ($value) => ['sometimes', ...$value], $rules);
         }
         $validator = Validator::make($request->all(), $rules, self::makeMessages());
         $validated = $validator->validated();
@@ -73,7 +72,8 @@ class FundraiserController extends Controller
             $fundraiser[$key] = $value;
         }
         $fundraiser->save();
-        return Fundraiser::find($id)->toResource()->additional(["message" => "fundraiser has been successfully updated"]);
+
+        return Fundraiser::find($id)->toResource()->additional(['message' => 'fundraiser has been successfully updated']);
     }
 
     /**
@@ -82,6 +82,7 @@ class FundraiserController extends Controller
     public function destroy(string $id)
     {
         Fundraiser::destroy($id);
-        return Fundraiser::withTrashed()->find($id)->toResource()->additional(["message" => "Fundraiser has been successfully deleted"]);
+
+        return Fundraiser::withTrashed()->find($id)->toResource()->additional(['message' => 'Fundraiser has been successfully deleted']);
     }
 }

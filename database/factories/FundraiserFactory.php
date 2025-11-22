@@ -18,10 +18,10 @@ class FundraiserFactory extends Factory
     public function definition(): array
     {
         return [
-            "user_id" => User::factory(),
-            "profile_picture" => fake()->imageUrl(category: "user"),
-            "dob" => fake()->date(),
-            "id_number" => fake()->unique()->randomNumber(6, true)
+            'user_id'         => User::factory(),
+            'profile_picture' => fake()->imageUrl(category: 'user'),
+            'dob'             => fake()->date(),
+            'id_number'       => fake()->unique()->randomNumber(6, true),
         ];
     }
 }

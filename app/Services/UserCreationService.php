@@ -10,6 +10,7 @@ class UserCreationService
     public function create(SaveUserRequest $request)
     {
         $validated = $request->validated();
+
         return User::create($validated);
     }
 }
