@@ -1,0 +1,13 @@
+{
+    "notPath": ["config/logging.php"],
+    "exclude": ["seeders", "Policies", "config"],
+    "rules": {
+        "array_indentation": true,
+        "binary_operator_spaces": {
+            "default": "single_space",
+            "operators": {
+                "=>": "align_single_space_minimal"
+            }
+        }
+    }
+}
