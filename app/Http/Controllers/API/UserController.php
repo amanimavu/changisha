@@ -9,13 +9,6 @@ use App\Services\UserCreationService;
 
 class UserController extends Controller
 {
-    protected $userCreationService;
-
-    public function __construct(UserCreationService $userCreationService)
-    {
-        $this->userCreationService = $userCreationService;
-    }
-
     /**
      * Display a listing of the resource.
      */
@@ -27,9 +20,9 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(SaveUserRequest $request)
+    public function store(SaveUserRequest $request, UserCreationService $userCreationService)
     {
-        return $this->userCreationService->create($request);
+        return $userCreationService->create($request);
     }
 
     /**
