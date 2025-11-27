@@ -22,6 +22,6 @@ Route::middleware([ForceJsonResponse::class])->group(function () {
         Route::resource('/categories', CategoryController::class);
         Route::resource('/campaigns', CampaignController::class);
         Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])->middleware(['signed'])->name('api.verification.verify');
-        Route::post('/email/verification-notification', [EmailVerificationController::class, 'resend'])->middleware('throttle:6,1')->name('api.verification.send');
+        Route::post('/email/verification-notification', [EmailVerificationController::class, 'resend'])->middleware('throttle:6,1')->name('verification.send');
     });
 });
