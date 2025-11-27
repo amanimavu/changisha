@@ -45,7 +45,7 @@ class SaveUserRequest extends FormRequest
             'name'     => ['required'],
             'address'  => ['nullable', 'max:255'],
             'email'    => ['bail', 'required', 'unique:users', 'max:255'],
-            'phone'    => ['bail', 'required', 'unique:users', 'max:255'],
+            'phone'    => ['bail', 'required', 'unique:users', 'phone:KE'],
             'username' => ['bail', 'required', 'unique:users', 'max:255'],
             'password' => ['bail', 'required'],
         ];
