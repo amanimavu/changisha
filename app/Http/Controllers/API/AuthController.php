@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SaveUserRequest;
 use App\Models\User;
 use App\Services\UserCreationService;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -21,6 +22,7 @@ class AuthController extends Controller
     {
         $user = $userCreationService->create($request);
         $token = $user->createToken('auth_token')->plainTextToken;
+        event(new Registered($user));
 
         return response()->json([
             'data' => [

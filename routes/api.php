@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CampaignController;
 use App\Http\Controllers\API\CategoryController;
+use App\Http\Controllers\API\EmailVerificationController;
 use App\Http\Controllers\API\FundraiserController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Middleware\ForceJsonResponse;
@@ -20,5 +21,7 @@ Route::middleware([ForceJsonResponse::class])->group(function () {
         Route::resource('/fundraisers', FundraiserController::class);
         Route::resource('/categories', CategoryController::class);
         Route::resource('/campaigns', CampaignController::class);
+        Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])->middleware(['signed'])->name('api.verification.verify');
+        Route::post('/email/verification-notification', [EmailVerificationController::class, 'resend'])->middleware('throttle:6,1')->name('api.verification.send');
     });
 });
