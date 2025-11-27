@@ -9,6 +9,7 @@ use App\Services\UserCreationService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -22,7 +23,7 @@ class AuthController extends Controller
     {
         $user = $userCreationService->create($request);
         $token = $user->createToken('auth_token')->plainTextToken;
-        event(new Registered($user));
+        // event(new Registered($user));
 
         return response()->json([
             'data' => [
