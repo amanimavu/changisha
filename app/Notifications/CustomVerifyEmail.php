@@ -3,14 +3,12 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
+// use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\URL;
-
-use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\URL;
 
 class CustomVerifyEmail extends Notification
 {
@@ -55,6 +53,7 @@ class CustomVerifyEmail extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         $verificationUrl = $this->verificationUrl($notifiable);
+
         return $this->buildMailMessage($verificationUrl);
     }
 
@@ -64,7 +63,7 @@ class CustomVerifyEmail extends Notification
             'api.verification.verify',
             now()->addMinutes(Config::get('auth.verification.expire', 60)),
             [
-                'id' => $notifiable->getKey(),
+                'id'   => $notifiable->getKey(),
                 'hash' => sha1($notifiable->email),
             ]
         );

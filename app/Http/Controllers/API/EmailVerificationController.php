@@ -11,12 +11,14 @@ class EmailVerificationController extends Controller
     public function verify(EmailVerificationRequest $request)
     {
         $request->fulfill();
+
         return response()->json(['message' => 'Email verified successfully.'], 200);
     }
 
     public function resend(Request $request)
     {
         $request->user()->sendEmailVerificationNotification();
+
         return response()->json(['message' => 'Email sent successfully'], 200);
     }
 }
