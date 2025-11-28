@@ -12,16 +12,19 @@ use Illuminate\Support\Facades\Route;
 Route::middleware([ForceJsonResponse::class])->group(function () {
     // Authentication routes
     Route::post('/register', [AuthController::class, 'register']);
-    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/login', [AuthController::class, 'login'])->middleware('verified');
 
     // Protected routes
-    Route::middleware('auth:sanctum')->group(function () {
-        Route::post('/logout', [AuthController::class, 'logout']);
+    Route::middleware('auth:sanctum', 'verified')->group(function () {
         Route::resource('/users', UserController::class);
         Route::resource('/fundraisers', FundraiserController::class);
         Route::resource('/categories', CategoryController::class);
         Route::resource('/campaigns', CampaignController::class);
-        Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])->middleware(['signed'])->name('api.verification.verify');
-        Route::post('/email/verification-notification', [EmailVerificationController::class, 'resend'])->middleware('throttle:6,1')->name('verification.send');
+
+        Route::withoutMiddleware('verified')->group(function () {
+            Route::post('/logout', [AuthController::class, 'logout']);
+            Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])->middleware(['signed'])->name('api.verification.verify');
+            Route::post('/email/verification-notification', [EmailVerificationController::class, 'resend'])->middleware('throttle:6,1')->name('verification.send');
+        });
     });
 });
