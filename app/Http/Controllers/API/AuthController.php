@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SaveUserRequest;
+use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use App\Services\UserCreationService;
 use Illuminate\Auth\Events\Registered;
@@ -18,7 +19,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register(SaveUserRequest $request, UserCreationService $userCreationService)
+    public function register(StoreUserRequest $request, UserCreationService $userCreationService)
     {
         $user = $userCreationService->create($request);
         $token = $user->createToken('auth_token')->plainTextToken;

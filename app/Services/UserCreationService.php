@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
-use App\Http\Requests\SaveUserRequest;
+use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use libphonenumber\PhoneNumberFormat;
 
 class UserCreationService
 {
-    public function create(SaveUserRequest $request)
+    public function create(StoreUserRequest $request)
     {
         $validated = $request->validated();
         $phone = phone($validated['phone'], 'KE', PhoneNumberFormat::INTERNATIONAL);
