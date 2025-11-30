@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CampaignController;
 use App\Http\Controllers\API\CategoryController;
+use App\Http\Controllers\API\DonationController;
 use App\Http\Controllers\API\EmailVerificationController;
 use App\Http\Controllers\API\FundraiserController;
 use App\Http\Controllers\API\UserController;
@@ -20,6 +21,7 @@ Route::middleware([ForceJsonResponse::class])->group(function () {
         Route::resource('/fundraisers', FundraiserController::class);
         Route::resource('/categories', CategoryController::class);
         Route::resource('/campaigns', CampaignController::class);
+        Route::resource('/donations', DonationController::class);
 
         Route::withoutMiddleware('verified')->group(function () {
             Route::post('/logout', [AuthController::class, 'logout']);

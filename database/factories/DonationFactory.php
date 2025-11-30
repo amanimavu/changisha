@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Campaign;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,11 @@ class DonationFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'amount' => fake()->numberBetween(50000, 300000),
+            'date' => fake()->dateTimeThisMonth(),
+
+            'campaign_id' => Campaign::factory(),
+            'user_id'   => User::factory(),
         ];
     }
 }
